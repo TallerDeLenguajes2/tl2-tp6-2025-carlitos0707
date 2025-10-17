@@ -24,15 +24,25 @@ using (SqliteConnection connection = new SqliteConnection(connectionString))
             }
     // Leer datos
             string selectQuery = "SELECT * FROM productos";
-            using (SqliteCommand selectCmd = new SqliteCommand(selectQuery, connection))
+    using (SqliteCommand selectCmd = new SqliteCommand(selectQuery, connection))
+    using (SqliteDataReader reader = selectCmd.ExecuteReader())
+    {
+        Console.WriteLine("Datos en la tabla 'productos':");
+        while (reader.Read())
+        {
+            Console.WriteLine($"ID: {reader["id"]}, Nombre: {reader["nombre"]}, Precio: {reader["precio"]}");
+        }
+    }
+        string selectIdQuery = "SELECT id , nombre FROM productos";
+            using (SqliteCommand selectCmd = new SqliteCommand(selectIdQuery, connection))
             using (SqliteDataReader reader = selectCmd.ExecuteReader())
             {
                 Console.WriteLine("Datos en la tabla 'productos':");
                 while (reader.Read())
                 {
-                    Console.WriteLine($"ID: {reader["id"]}, Nombre: {reader["nombre"]}, Precio: {reader["precio"]}");
+                    Console.WriteLine($"ID: {reader["id"]} , NOMBRE: {reader["nombre"]}");
                 }
-            }
+            } 
 
             connection.Close();
 }
